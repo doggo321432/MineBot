@@ -1,0 +1,13 @@
+{
+  "Plugin-Class": "org.minebot.MineBotPlugin",
+  "Name": "${project.plugin_name}",
+  "Version": "${project.plugin_version}",
+  "Description": "Mines a chosen ore with Baritone, deposits it in a chest (coal in a separate chest), repeats",
+  "URL": "",
+  "Authors": [
+    "you"
+  ],
+  "Minecraft-Versions": [
+    "${project.minecraft_version}"
+  ]
+}
