@@ -1,17 +1,12 @@
-# MineBot (RusherHack plugin)
+# MineBot (RusherHack Plugin)
 
-Mines the ore you pick with Baritone. When the inventory is nearly full it walks to your ore chest, deposits,
-walks back to where it was mining and repeats. Optionally it also mines coal and puts it in a separate coal chest.
-Junk is thrown away while mining so each run carries as much ore as possible.
+Mines the ore you pick with Baritone. When the inventory is nearly full it walks to your ore chest, deposits, walks back to where it was mining and repeats. Optionally it also mines coal and puts it in a separate coal chest. Junk is thrown away while mining so each run carries as much ore as possible.
 
-## Installing over CopperBot
+## Install
 
-1. Delete the old CopperBot jar from `rusherhack/plugins/`.
-2. In your existing project, delete `src/main/java/org/copperbot`, then copy this zip's `src` folder over yours.
-3. In `gradle.properties` set `plugin_name = minebot`. Keep your own working build files.
-4. Build, put `minebot-1.0.0.jar` (name follows plugin_name/plugin_version) in `rusherhack/plugins/`.
-
-Chest positions and settings from CopperBot are not carried over, set them again.
+1. Build the JAR: `./gradlew build`
+2. Copy `build/libs/minebot-<version>.jar` to your `rusherhack/plugins/` folder
+3. Restart Minecraft or reload plugins
 
 ## Use
 
@@ -20,12 +15,9 @@ Chest positions and settings from CopperBot are not carried over, set them again
 3. Open the MineBot module, pick the **Ore**, turn on **MineCoal** if wanted, enable the module. Pickaxe in the hotbar.
 4. `*minechest` alone shows the status. `*minebot` is the module's own settings command that RusherHack creates.
 
-Why `minechest` and not `minebot`: RusherHack already makes a command named after every module. Two commands
-with one name hide each other, which is why `*copperbot setchest` was missing.
-
 ## Settings
 
-| Setting | Default | |
+| Setting | Default | Description |
 |---|---|---|
 | Ore | Copper | Copper, Iron, Gold, Diamond, Redstone, Lapis, Emerald, Quartz, AncientDebris, Custom |
 | CustomBlocks / CustomItems | empty | Only used when Ore is Custom. Comma separated, e.g. `ancient_debris` |
@@ -42,14 +34,38 @@ with one name hide each other, which is why `*copperbot setchest` was missing.
 | TransferDelay | 3 | Ticks between chest clicks |
 | TimeoutSeconds | 300 | Max for each walking/chest step (not mining) |
 | ReturnToMine | on | Walk back to where mining stopped |
+| BlockBreakBlacklist | chest, trapped_chest, hopper, furnace, blast_furnace, smoker, barrel, dropper, dispenser, shulker_box | Blocks Baritone will never break |
 
 ## Stops on its own when
 
-you die, a chest is full, no ore is found nearby (ExploreForOre off), it cannot reach or open a chest, the
-inventory is still nearly full after a trip (add the leftovers to JunkItems, or use DepositEverything), or Baritone
-is not found.
+- You die
+- A chest is full
+- No ore is found nearby (ExploreForOre off)
+- It cannot reach or open a chest
+- Inventory is still nearly full after a trip (add the leftovers to JunkItems, or use DepositEverything)
+- Baritone is not found
 
-## Build reference (from ContainerTweaks, a RusherHack plugin that supports 1.21.11)
+## Features
 
-loom plugin `net.fabricmc.fabric-loom-remap` version `1.16-SNAPSHOT`, mappings Mojang + Parchment `2025.12.20`,
-dependency `org.rusherhack:rusherhack-api:1.21.11-SNAPSHOT`.
+- **Baritone integration** — Uses reflection for version-independent Baritone API access
+- **KillAura compatible** — Pauses mining when attacked so KillAura can equip sword
+- **Chest protection** — Block break blacklist prevents Baritone from breaking containers
+- **Desync recovery** — Detects and recovers from container desync during deposit
+- **Non-blocking** — No main-thread freezes during Baritone operations
+
+## Build Reference
+
+- Minecraft 1.21.11
+- Fabric Loader 0.16.9
+- Fabric Loom 1.9-SNAPSHOT
+- RusherHack API 1.21.11-SNAPSHOT
+- Java 21
+
+## Commands
+
+| Command | Description |
+|---|---|
+| `*minechest ore` | Set ore chest at crosshair |
+| `*minechest coal` | Set coal chest at crosshair |
+| `*minechest` | Show current chest positions |
+| `*minebot` | Open module settings |
